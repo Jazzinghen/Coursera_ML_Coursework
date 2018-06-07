@@ -17,14 +17,20 @@ function [theta, J_history] = gradientDescent(X, y, theta, alpha, num_iters)
       %       of the cost function (computeCost) and gradient here.
       %
       linear_output = X * theta;
-      next_theta = [];
 
-      for theta_i = 1:(size(theta)(1))
-        current_x = X(:, theta_i)';
-        next_theta(theta_i) = theta(theta_i) - (alpha/m) * (current_x * (linear_output - y));
-      end
+      % The formula is somewhere along the lines of "For each tetha
+      % compute the difference with the cost function"
+      %
+      % This means that we can use theta (1 x n) and multiply it by
+      % the result of all the Xs transposed (n x m) multiplied by
+      % the distance of the linear output from the real output (m x 1)
+      %
+      % (X' * (linear_output - y)) computes sum(h(x^i) - y) for each
+      % tetha, allowing then to just run a scalar multiplication and a
+      % vector subtraction
+      next_theta = theta - (alpha/m) * (X' * (linear_output - y));
 
-      theta = next_theta'
+      theta = next_theta
       % ============================================================
 
       % Save the cost J in every iteration
