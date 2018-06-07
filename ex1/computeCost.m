@@ -15,7 +15,7 @@ J = 0;
 
 % Compute the the entire outups by using matrix multiplication.
 % I didn't think that X was a [m, 2] matrix
-linear_output = X * theta
+linear_output = X * theta;
 
 % Compute cost using a single line XD
 J = (1/(2*m)) * sum((linear_output - y) .^ 2)
