@@ -21,7 +21,7 @@ function [theta, J_history] = gradientDescent(X, y, theta, alpha, num_iters)
 
       for theta_i = 1:(size(theta)(1))
         current_x = X(:, theta_i)';
-        next_theta(theta_i) = theta(theta_i) - (alpha/m) * sum(current_x * (linear_output - y));
+        next_theta(theta_i) = theta(theta_i) - (alpha/m) * (current_x * (linear_output - y));
       end
 
       theta = next_theta'
