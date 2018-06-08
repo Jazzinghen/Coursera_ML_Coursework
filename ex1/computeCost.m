@@ -18,7 +18,7 @@ J = 0;
 linear_output = X * theta;
 
 % Compute cost using a single line XD
-J = (1/(2*m)) * sum((linear_output - y) .^ 2)
+J = (1/(2*m)) * sum((linear_output - y) .^ 2);
 
 % =========================================================================
 
