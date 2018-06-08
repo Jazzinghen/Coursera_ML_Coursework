@@ -30,7 +30,7 @@ function [theta, J_history] = gradientDescent(X, y, theta, alpha, num_iters)
       % vector subtraction
       next_theta = theta - (alpha/m) * (X' * (linear_output - y));
 
-      theta = next_theta
+      theta = next_theta;
       % ============================================================
 
       % Save the cost J in every iteration
