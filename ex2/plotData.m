@@ -18,8 +18,8 @@ function plotData(X, y)
   found_zeroes = find(y==0);
 
   % Plot points based on which category they fall into.
-  scatter(ex2data2(found_ones, 1), ex2data2(found_ones, 2), 'k', '+');
-  scatter(ex2data2(found_zeroes, 1), ex2data2(found_zeroes, 2), 'k', 'o');
+  scatter(X(found_ones, 1), X(found_ones, 2), 'b', 'o');
+  scatter(X(found_zeroes, 1), X(found_zeroes, 2), 'r', 'x');
   % =========================================================================
 
   hold off;
