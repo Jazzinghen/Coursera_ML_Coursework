@@ -49,9 +49,16 @@ function [all_theta] = oneVsAll(X, y, num_labels, lambda)
   %                 initial_theta, options);
   %
 
+  % Create optimization settings
+  % Specifically tell the optimization function that we want to run 50
+  % iterations and the we are going to provide a gradient function
   min_conf = optimset('GradObj', 'on', 'MaxIter', 50);
 
+  % Hurr durr
   for i = 1:num_labels
+    % This was a pain in the ass not for the concept behind it, but mostly
+    % due to the fact that I couldn't find a non stupid version of the
+    % API description for this call.
     all_theta(i, :) = fmincg (@(t)(lrCostFunction(t, X, (y == i), lambda)),
                       all_theta(i, :)', min_conf);
   endfor
