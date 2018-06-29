@@ -85,7 +85,7 @@ function [J grad] = nnCostFunction(nn_params, ...
 
    % I am using the same function I used to compute J for the logistic regression, which is the same. The idea is to use
    % vectorialized computations
-   positive_output = -vec_output .* (log(next_nodes));
+   positive_output = -vec_output .* log(next_nodes);
    negative_output = -(1-vec_output) .* log(1-next_nodes);
    J = 1/m * sum(positive_output + negative_output);
 
