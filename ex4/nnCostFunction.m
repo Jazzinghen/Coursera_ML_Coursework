@@ -71,11 +71,11 @@ function [J grad] = nnCostFunction(nn_params, ...
   % Compute the new node values, using matrix product and sigmoid
   % computation.
   % This generates the nodes for the hidden layer
-  next_nodes = sigmoid(X * Theta1');
+  hidden_layer = sigmoid(X * Theta1');
 
   % Do the same thing for the output layer
-  next_nodes = [additional_ones next_nodes];
-  next_nodes = sigmoid(next_nodes * Theta2');
+  hidden_layer = [additional_ones hidden_layer];
+  prediction = sigmoid(hidden_layer * Theta2');
 
    % next_nodes is the matrix of outputs
 
@@ -85,9 +85,7 @@ function [J grad] = nnCostFunction(nn_params, ...
 
    % I am using the same function I used to compute J for the logistic regression, which is the same. The idea is to use
    % vectorialized computations
-   positive_output = -vec_output .* log(next_nodes);
-   negative_output = -(1-vec_output) .* log(1-next_nodes);
-   J = 1/m * sum(positive_output + negative_output);
+   J = -(1/m) * sum((vec_output .* log(prediction) + (1-vec_output) .* log(1-prediction))(:));
 
   % -------------------------------------------------------------
 
