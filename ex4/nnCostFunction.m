@@ -85,7 +85,16 @@ function [J grad] = nnCostFunction(nn_params, ...
 
    % I am using the same function I used to compute J for the logistic regression, which is the same. The idea is to use
    % vectorialized computations
-   J = -(1/m) * sum((vec_output .* log(prediction) + (1-vec_output) .* log(1-prediction))(:));
+   positive_cost_component = vec_output .* log(prediction);
+   negative_cost_component = (1-vec_output) .* log(1-prediction);
+
+   first_hidden_gradient = sum(Theta1(:, 2:end)(:) .^ 2);
+   second_hidden_gradient = sum(Theta2(:, 2:end)(:) .^ 2);
+
+   % Compute the cost using the various components. Did it like this because the command was too long.
+   J = -(1/m) * sum((positive_cost_component + negative_cost_component)(:)) + (lambda/(2*m) * (first_hidden_gradient + second_hidden_gradient));
+
+
 
   % -------------------------------------------------------------
 
