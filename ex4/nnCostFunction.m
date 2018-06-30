@@ -103,13 +103,26 @@ function [J grad] = nnCostFunction(nn_params, ...
   % -------------------------------------------------------------
   % Compute gradients
 
+  % Compute the first difference. This is basically how far the prediction was with respect to the ground truth.
   diff_3 = prediction - vec_output;
 
   % Compute second layer differences and gradient
+  %
+  % First step is to... Mh. Compute the difference between the activation value of the hidden layer with the activation
+  % it should have had if we returned the ground truth.
+  % To do this we perform a backward computation using the delta of the output layer and compute the sum of each delta
+  % multiplied by the weights that contributed to that delta.
+  % This will results in a matrix that has a number of rows equal to the examples and a number of columns equal to each
+  % node in the hidden layer.
+  %
+  % After that we compute the partial derivatives for each weight
   diff_2 = (diff_3 * Theta2)(:, 2:end) .* sigmoidGradient(first_activation);
   Theta2_grad = 1/m * (diff_3' * hidden_layer);
 
   % Compute the first layer gradient
+  %
+  % This step is equal to the other but we don't need to compute the deltas as the values in the layer are the input
+  % values, which cannot be changed.
   Theta1_grad = 1/m * (diff_2' * X);
 
   % =========================================================================
