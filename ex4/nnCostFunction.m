@@ -71,11 +71,13 @@ function [J grad] = nnCostFunction(nn_params, ...
   % Compute the new node values, using matrix product and sigmoid
   % computation.
   % This generates the nodes for the hidden layer
-  hidden_layer = sigmoid(X * Theta1');
+  first_activation = X * Theta1';
+  hidden_layer = sigmoid(first_activation);
 
   % Do the same thing for the output layer
   hidden_layer = [additional_ones hidden_layer];
-  prediction = sigmoid(hidden_layer * Theta2');
+  second_activation = hidden_layer * Theta2';
+  prediction = sigmoid(second_activation);
 
   % next_nodes is the matrix of outputs
 
@@ -101,7 +103,14 @@ function [J grad] = nnCostFunction(nn_params, ...
   % -------------------------------------------------------------
   % Compute gradients
 
+  diff_3 = prediction - vec_output;
 
+  % Compute second layer differences and gradient
+  diff_2 = (diff_3 * Theta2)(:, 2:end) .* sigmoidGradient(first_activation);
+  Theta2_grad = 1/m * (diff_3' * hidden_layer);
+
+  % Compute the first layer gradient
+  Theta1_grad = 1/m * (diff_2' * X);
 
   % =========================================================================
 
