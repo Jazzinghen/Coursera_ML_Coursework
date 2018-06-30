@@ -77,26 +77,31 @@ function [J grad] = nnCostFunction(nn_params, ...
   hidden_layer = [additional_ones hidden_layer];
   prediction = sigmoid(hidden_layer * Theta2');
 
-   % next_nodes is the matrix of outputs
+  % next_nodes is the matrix of outputs
 
-   % Create an identity matrix as big as the output in order to have a results vector...
-   y_converter = eye(num_labels);
-   vec_output = y_converter(y, :);
+  % Create an identity matrix as big as the output in order to have a results vector...
+  y_converter = eye(num_labels);
+  vec_output = y_converter(y, :);
 
-   % I am using the same function I used to compute J for the logistic regression, which is the same. The idea is to use
-   % vectorialized computations
-   positive_cost_component = vec_output .* log(prediction);
-   negative_cost_component = (1-vec_output) .* log(1-prediction);
+  % I am using the same function I used to compute J for the logistic regression, which is the same. The idea is to use
+  % vectorialized computations
+  positive_cost_component = vec_output .* log(prediction);
+  negative_cost_component = (1-vec_output) .* log(1-prediction);
 
-   first_hidden_gradient = sum(Theta1(:, 2:end)(:) .^ 2);
-   second_hidden_gradient = sum(Theta2(:, 2:end)(:) .^ 2);
+  first_hidden_regularization = sum(Theta1(:, 2:end)(:) .^ 2);
+  second_hidden_regularization = sum(Theta2(:, 2:end)(:) .^ 2);
 
-   % Compute the cost using the various components. Did it like this because the command was too long.
-   J = -(1/m) * sum((positive_cost_component + negative_cost_component)(:)) + (lambda/(2*m) * (first_hidden_gradient + second_hidden_gradient));
-
-
+  % Compute the cost using the various components. Did it like this because the command was too long. And it still
+  % counts as too long, in my opinion.
+  %
+  % I had to use the (:) command in order to transform the matrices in vectors otherwise the sum function will compute
+  % the sum along one of the dimensions
+  J = -(1/m) * sum((positive_cost_component + negative_cost_component)(:)) + (lambda/(2*m) * (first_hidden_regularization + second_hidden_regularization));
 
   % -------------------------------------------------------------
+  % Compute gradients
+
+
 
   % =========================================================================
 
