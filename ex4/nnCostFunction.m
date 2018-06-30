@@ -119,11 +119,19 @@ function [J grad] = nnCostFunction(nn_params, ...
   diff_2 = (diff_3 * Theta2)(:, 2:end) .* sigmoidGradient(first_activation);
   Theta2_grad = 1/m * (diff_3' * hidden_layer);
 
+  % Compute regularization factors and add them to the output gradient
+  Theta2_reg = (lambda/m) * Theta2;
+  Theta2_reg(:, 1) = 0;
+  Theta2_grad = Theta2_grad + Theta2_reg;
+
   % Compute the first layer gradient
   %
   % This step is equal to the other but we don't need to compute the deltas as the values in the layer are the input
   % values, which cannot be changed.
   Theta1_grad = 1/m * (diff_2' * X);
+  Theta1_reg = (lambda/m) * Theta1;
+  Theta1_reg(:, 1) = 0;
+  Theta1_grad = Theta1_grad + Theta1_reg;
 
   % =========================================================================
 
