@@ -19,16 +19,32 @@ function [J, grad] = linearRegCostFunction(X, y, theta, lambda)
   %               You should set J to the cost and grad to the gradient.
   %
 
-  % Compute predictions and then the deviations sum
+  % Compute predictions and their deltas with respect to the ground truth
   predictions = X * theta;
-  deltas = sum((predictions - y) .^ 2);
+  deltas = predictions - y;
 
   % Compute theta^2 and remove the first
   regularization = theta .^ 2;
   regularization(1) = 0;
 
   % Mix all together
-  J = (1 / (2*m)) * deltas + (lambda / (2*m)) * sum(regularization);
+  J = (1 / (2*m)) * sum(deltas .^ 2) + (lambda / (2*m)) * sum(regularization);
+
+  % Compute gradients
+
+  % Create gradient regularization factor vector
+  gradient_reg = (lambda / m) * theta;
+  gradient_reg(1) = 0;
+
+  % Actually compute gradient
+  % Compute gradient using matrix multiplication.
+  %
+  % X contains all the inputs (e.g. 10 x 3, 10 examples of 3 inputs), while
+  % deltas contain all the... Well, the deltas (e.g. 10 x 1, 10 deltas). To
+  % compute the 1/m sum(delta * x_j) we use the transpose of inputs, allowing
+  % me to do the sum of the deltas multiplied by the inputs of a specific
+  % counter.
+  grad = (1 / m) * X' * deltas + gradient_reg;
 
   % =========================================================================
 
