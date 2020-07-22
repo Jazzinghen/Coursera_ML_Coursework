@@ -14,7 +14,7 @@ m = length(y); % number of training examples
 total_J = X * theta;
 
 % Compute the final cost
-J = sum((total_J - y).^2)/(2.*m)
+J = sum((total_J - y).^2)/(2.*m);
 
 % =========================================================================
 
