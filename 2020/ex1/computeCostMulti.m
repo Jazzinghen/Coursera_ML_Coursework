@@ -13,9 +13,11 @@ J = 0;
 % Instructions: Compute the cost of a particular choice of theta
 %               You should set J to the cost.
 
+% Compute all the costs for each sample
+total_J = X * theta;
 
-
-
+% Compute the final cost
+J = sum((total_J - y).^2)/(2.*m);
 
 % =========================================================================
 
