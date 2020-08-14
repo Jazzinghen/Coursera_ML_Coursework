@@ -49,17 +49,19 @@ X = [ones(m, 1) X];
 %                 initial_theta, options);
 %
 
+  % Create optimization settings
+  min_conf = optimset('GradObj', 'on', 'MaxIter', 50);
 
+  % Create a constant empty theta vector
+  initial_theta = zeros(n + 1, 1);
 
-
-
-
-
-
-
-
-
-
+  % Sigh. A loop.
+  % For each label
+  for label = 1:num_labels
+        % Set the row of theta for that label to the values returned by fmincg
+        all_theta(label,:) = fmincg (@(t)(lrCostFunction(t, X, (y == label), lambda)), ...
+                  initial_theta, min_conf);
+  endfor
 % =========================================================================
 
 
