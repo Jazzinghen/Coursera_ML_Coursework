@@ -30,7 +30,9 @@ X = [ones(m, 1) X];
 %       for each row.
 %       
 
-predictions = X * all_theta';
+% This would work even _without_ the sigmoid, but I think this is much more
+% formal
+predictions = sigmoid(X * all_theta');
 [tmp,p] = max(predictions, [], 2);
 
 % =========================================================================

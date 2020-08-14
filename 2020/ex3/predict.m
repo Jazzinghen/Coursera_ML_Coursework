@@ -21,13 +21,20 @@ p = zeros(size(X, 1), 1);
 %       can use max(A, [], 2) to obtain the max for each row.
 %
 
+  % Create the additional ones to append to each row...
+  additional_ones = ones(rows(X), 1);
 
-
-
-
-
-
-
+  % Add ones to the X data matrix, as with predictOneVsAll
+  X = [additional_ones X];
+  % Compute the activations for the nodes in the first hidden layer
+  second_layer = sigmoid(X * Theta1');
+  
+  second_layer = [additional_ones second_layer];
+  % Compute the activations for the output layer for each input
+  third_layer = sigmoid(second_layer * Theta2');
+  
+  % Get the "Activated" output node
+  [tmp,p] = max(third_layer, [], 2);
 
 % =========================================================================
 
