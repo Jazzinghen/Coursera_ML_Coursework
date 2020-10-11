@@ -74,13 +74,15 @@ X = [hidden_bias X];
 
 % Compute the activation of the first hidden layer by multiplying
 % the X 
-hidden_layer_act = sigmoid(X * Theta1');
+hidden_layer_input = X * Theta1';
+hidden_layer_act = sigmoid(hidden_layer_input);
 
 % Add bias unit to hidden layer activations
 hidden_layer_with_bias = [hidden_bias hidden_layer_act];
 
 % Compute the activation of the output units
-network_output = sigmoid(hidden_layer_with_bias * Theta2');
+last_input = hidden_layer_with_bias * Theta2';
+network_output = sigmoid(last_input);
 
 % Generate the target output matrix
 sample_output = eye(size(network_output));
@@ -97,6 +99,18 @@ regularization = (lambda / (2.0*m)) * (sum(sumsq(Theta1(:, 2:end))) + sum(sumsq(
 J = non_regularized_error + regularization;
 
 % -------------------------------------------------------------
+
+% Compute the delta for the thrid layer, which is just the difference between the
+% "ground truth" and what we computed
+delta_three = network_output - sample_output;
+% Then compute the gradient for that layer, which is the delta of the third layer
+% multiplied by the activation of the hidden layer
+Theta2_grad = 1/m * (delta_three' * hidden_layer_with_bias);
+
+% Compute the delta of the hidden layer by using the provided formula
+delta_two = (delta_three * Theta2)(:, 2:end) .* sigmoidGradient(hidden_layer_input);
+% Compute the gradient by using X as the activation of the input layer
+Theta1_grad = 1/m * (delta_two' * X);
 
 % =========================================================================
 
