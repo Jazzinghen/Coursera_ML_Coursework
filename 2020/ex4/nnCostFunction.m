@@ -102,15 +102,25 @@ J = non_regularized_error + regularization;
 
 % Compute the delta for the thrid layer, which is just the difference between the
 % "ground truth" and what we computed
+%
+% Resulting size: 5000x10 (5000 samples with 10 deltas)
 delta_three = network_output - sample_output;
 % Then compute the gradient for that layer, which is the delta of the third layer
 % multiplied by the activation of the hidden layer
+% Resulting size: 10 x 26 (10 outputs for 26 hidden nodes)
+% Computation: (10 x 5000) * (5000 x 26) = 10 x 26
 Theta2_grad = 1/m * (delta_three' * hidden_layer_with_bias);
 
+% Add gradient regularization
+Theta2_grad +=  (lambda / m) * [zeros(rows(Theta2), 1) Theta2(:, 2:end)];
+
 % Compute the delta of the hidden layer by using the provided formula
+% Resulting size: 5000 x 26
 delta_two = (delta_three * Theta2)(:, 2:end) .* sigmoidGradient(hidden_layer_input);
 % Compute the gradient by using X as the activation of the input layer
+% Resulting size: 25 x 401
 Theta1_grad = 1/m * (delta_two' * X);
+Theta1_grad +=  (lambda / m) * [zeros(rows(Theta1), 1) Theta1(:, 2:end)];
 
 % =========================================================================
 
