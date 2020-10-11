@@ -89,9 +89,12 @@ sample_output = sample_output(y,:);
 % Compute the results for both the positive output and the negative output
 positive_error = (-sample_output .* log(network_output));
 negative_error = (1 - sample_output) .* log(1 - network_output);
+non_regularized_error = (1 / m) * sum(sum(positive_error - negative_error));
 
-J = (1 / m) * (sum(positive_error - negative_error));
-J = sum(J);
+% Compute regularization
+regularization = (lambda / (2.0*m)) * (sum(sumsq(Theta1(:, 2:end))) + sum(sumsq(Theta2(:, 2:end))));
+
+J = non_regularized_error + regularization;
 
 % -------------------------------------------------------------
 
